@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "ChyaGrpcClient.Protos";
+
+package testservcie;
+
+service TestService
+{
+   rpc GetEcho (EchoInput) returns (EchoOutput);
+   rpc GetEchoStream (EchoInput) returns (stream EchoOutput);
+   rpc GetDateTime (google.protobuf.Empty) returns (TimeOutput);
+}
+
+message EchoInput
+{
+   string input = 1;
+}
+
+message EchoOutput
+{
+   string output = 1;
+   google.protobuf.Timestamp TimeStamp = 2;
+}
+
+message TimeOutput
+{
+  google.protobuf.Timestamp TimeStamp = 1;
+}
+
+
