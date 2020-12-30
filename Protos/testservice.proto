@@ -10,8 +10,9 @@ package testservcie;
 service TestService
 {
    rpc GetEcho (EchoInput) returns (EchoOutput);
-   rpc GetEchoStream (EchoInput) returns (stream EchoOutput);
    rpc GetDateTime (google.protobuf.Empty) returns (TimeOutput);
+   rpc GetEchoStream (EchoInput) returns (stream EchoOutput);
+   rpc GetInputStream (stream EchoInput) returns (EchoOutput);
 }
 
 message EchoInput
