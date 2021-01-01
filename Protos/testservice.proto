@@ -13,6 +13,7 @@ service TestService
    rpc GetDateTime (google.protobuf.Empty) returns (TimeOutput);
    rpc GetEchoStream (EchoInput) returns (stream EchoOutput);
    rpc GetInputStream (stream EchoInput) returns (EchoOutput);
+   rpc GetInputStreamAsServerStream (stream EchoInput) returns (stream EchoOutput);
 }
 
 message EchoInput

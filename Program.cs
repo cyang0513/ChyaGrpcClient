@@ -34,20 +34,42 @@ namespace ChyaGrpcClient
          Console.WriteLine("Get echo: " + res.Output.Trim());
 
          Console.WriteLine("Type in something to get echo stream (Server streaming call): ");
-         inputKey = Console.ReadLine();
-         input = new EchoInput()
-         {
-            Input = inputKey
-         };
-
-         var task = HandleServerStreamingCallAsync(client, input);
+         var task = HandleServerStreamingCallAsync(client);
          task.Wait();
 
          Console.WriteLine("Type 3 line to get a echo return (Client streaming call): ");
          HandleClientStreamingCall(client);
 
+         Console.WriteLine("Type 3 line to get echo return in stream (Client/Server streaming call): ");
+         var task2 = HandleClientServerStreamingCall(client);
+         task2.Wait();
+
+         Console.WriteLine("Type any key to close demo...");
          Console.ReadKey();
 
+      }
+
+      private static async Task HandleClientServerStreamingCall(TestService.TestServiceClient client)
+      {
+         var call = client.GetInputStreamAsServerStream();
+
+         for (int i = 0; i < 3; i++)
+         {
+            var inputLine = Console.ReadLine();
+
+            await call.RequestStream.WriteAsync(new EchoInput()
+            {
+               Input = inputLine
+            });
+         }
+         await call.RequestStream.CompleteAsync();
+
+         var responses = call.ResponseStream.ReadAllAsync();
+         await foreach (var res in responses)
+         {
+            Console.WriteLine("Get echo from stream: " + res.Output.Trim());
+            Console.WriteLine("Get echo time: " + res.TimeStamp.ToDateTime().ToLocalTime());
+         }
       }
 
       private static void HandleClientStreamingCall(TestService.TestServiceClient client)
@@ -72,8 +94,13 @@ namespace ChyaGrpcClient
          Console.WriteLine("Get time: " + response.Result.TimeStamp.ToDateTime().ToLocalTime());
       }
 
-      public static async Task HandleServerStreamingCallAsync(TestService.TestServiceClient client, EchoInput input)
+      public static async Task HandleServerStreamingCallAsync(TestService.TestServiceClient client)
       {
+         var inputKey = Console.ReadLine();
+         var input = new EchoInput()
+         {
+            Input = inputKey
+         };
          var resStream = client.GetEchoStream(input);
 
          while (await resStream.ResponseStream.MoveNext())
