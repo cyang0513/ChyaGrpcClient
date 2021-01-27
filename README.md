@@ -2,7 +2,7 @@
 Grpc client with C# .NET5
 
 This is a demo of calling GRPC server in .NET 5 with C#.
-The server side is here: https://github.com/cyang0513/ChyaGrpc
+The server side is here: https://github.com/cyang0513/ChyaGrpcSvr
 
 It contains demo of different calling ways:
 
