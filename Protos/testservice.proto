@@ -14,11 +14,17 @@ service TestService
    rpc GetEchoStream (EchoInput) returns (stream EchoOutput);
    rpc GetInputStream (stream EchoInput) returns (EchoOutput);
    rpc GetInputStreamAsServerStream (stream EchoInput) returns (stream EchoOutput);
+   rpc GetSysInfo(google.protobuf.Empty) returns (GeneralOutput);
 }
 
 message EchoInput
 {
    string input = 1;
+}
+
+message GeneralOutput
+{
+   string output = 1;
 }
 
 message EchoOutput

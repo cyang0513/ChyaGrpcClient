@@ -14,13 +14,16 @@ namespace ChyaGrpcClient
       {
          Console.WriteLine("Hello Grpc!");
 
-         using var channel = GrpcChannel.ForAddress(@"https://localhost:5001",
+         using var channel = GrpcChannel.ForAddress(@"https://chyagrpc.northeurope.azurecontainer.io:5001",
             new GrpcChannelOptions()
             {
                MaxReceiveMessageSize = null,
                MaxSendMessageSize = null
             });
          var client = new TestService.TestServiceClient(channel);
+
+         var sysInfo = client.GetSysInfo(new Google.Protobuf.WellKnownTypes.Empty());
+         Console.WriteLine(sysInfo.Output);
 
          var ts = client.GetDateTime(new Google.Protobuf.WellKnownTypes.Empty());
          Console.WriteLine("Google Protobuf Time: " + ts.TimeStamp.ToDateTime().ToLocalTime());
