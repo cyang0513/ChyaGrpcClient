@@ -1,7 +1,5 @@
 # ChyaGrpcClient
 
-For CSG internal trainning and demo purpose only.
-
 Grpc client with C# .NET5
 
 This is a demo of calling GRPC server in .NET 5 with C#.
